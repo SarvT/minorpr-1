@@ -4,14 +4,12 @@ import numpy as np
 import pickle
 from sklearn.preprocessing import StandardScaler
 from imblearn.over_sampling import SMOTE
-import data
-
+import datalist
+import json
+import file
 import pandas as pd
 
 app = Flask(__name__)
-
-
-mdl = pickle.load(open('model_svc.pkl', 'rb'))
 
 @app.route('/')
 def index():
@@ -30,30 +28,43 @@ def forms():
     glc = request.form['glc']
     vitals = [age, sbp, hbp, h_rate, glc, spo2, temp_c]
     res = predict(gender,age, sbp, hbp, h_rate, glc, spo2, temp)
-    # if (res[0] == 1):
-    #     result = "healthy"
-    # elif(res[0] == 2):
-    #     result = "High BP"
-    # elif(res[0] == 3):
-    #     result = "LOW BP"
-    # elif(res[0] == 4):
-    #     result = "High Sugar"
-    # elif(res[0] == 5):
-    #     result = "Low Sugar"
-    # elif(res[0] == 6):
-    #     result = "Low Oxygen"
-    # elif(res[0] == 7):
-    #     result = "High Temperature"
-    # elif(res[0] == 8):
-    #     result = "Heartbeat is High"
-    # elif(res[0] == 9):
-    #     result = "Risk"
-    result = data.con[res[0]-1]
-    return render_template('report.html', res = result, zipped_data = zip(vitals, data.vals))
+    if (res[0] == 1):
+        result = "healthy"
+        data = rec("healthy")
+        
+    elif(res[0] == 2):
+        result = "High BP"
+        data = rec("highbp")
+    elif(res[0] == 3):
+        result = "LOW BP"
+        data = rec("lowbp")
+    elif(res[0] == 4):
+        result = "High Sugar"
+        data = rec("highsugar")
+    elif(res[0] == 5):
+        result = "Low Sugar"
+        data = rec("lowsugar")
+    elif(res[0] == 6):
+        result = "Low Oxygen"
+        data = rec("lowoxy")
+    elif(res[0] == 7):
+        result = "High Temperature"
+        data = rec("hightemp")
+    elif(res[0] == 8):
+        result = "Heartbeat is High"
+        data = rec("highhbeat")
+    elif(res[0] == 9):
+        result = "Risk"
+        data = rec("risk")
+    # result = data.con[res[0]-1]
+    return render_template('report.html', res = result, zipped_data = zip(vitals, datalist.vals), data = data)
 
 @app.route('/forms', methods=['POST', 'GET'])
 def form():
     return render_template('forms.html')
+
+def rec(stri):
+    return file.parsed[stri]
 
 @app.route('/tips', methods=['POST', 'GET'])
 def tips():

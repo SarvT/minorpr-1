@@ -6,11 +6,27 @@
 # pickled_model = pickle.load(open('hhcs_rfc.sav', 'rb'))
 # print(pickled_model.predict(p))
 
-fah = 104
-cel = (fah-32)/1.8
+# fah = 104
+# cel = (fah-32)/1.8
 
-print(cel)
+# print(cel)
 
-f=96
-temp = f*9/5+32
-print(temp)
+# f=96
+# temp = f*9/5+32
+# print(temp)
+
+
+import json
+with open('hdata.json') as user_file:
+  file_contents = user_file.read()
+
+# print(file_contents)
+
+parsed = json.loads(file_contents)
+ex = 'lowsugar'
+# print(parsed['th'])
+data = parsed[ex]
+
+for i in data:
+  print(i)
+

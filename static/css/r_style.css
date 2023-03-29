@@ -63,3 +63,7 @@ td{
     display: flex;
     
 }
+
+.info{
+    padding: 0.3rem 1rem;
+}
